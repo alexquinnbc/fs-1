@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nervous System Training Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-color: #121212;
+            --glass-bg: rgba(35, 35, 45, 0.6);
+            --border-color: rgba(255, 255, 255, 0.2);
+            --primary-text: #EAEAEA;
+            --secondary-text: #B3B3B3;
+            --accent-color: #6A5ACD;
+            --accent-hover: #8374E7;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(106, 90, 205, 0.2) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 90%, rgba(76, 175, 80, 0.15) 0%, transparent 50%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--secondary-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .tool-description {
+            font-size: 0.95rem;
+            color: var(--secondary-text);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        /* Breathing Tool */
+        .breathing-tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .breathing-visualizer {
+            width: 150px;
+            height: 150px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 4s cubic-bezier(0.445, 0.05, 0.55, 0.95), background-color 1s ease;
+        }
+
+        .breathing-visualizer p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .breathing-visualizer.breathing {
+            animation: breathing-cycle 16s infinite;
+        }
+
+        @keyframes breathing-cycle {
+            0%, 100% { transform: scale(1); } /* Hold */
+            25% { transform: scale(1.3); } /* Inhale */
+            50% { transform: scale(1.3); } /* Hold */
+            75% { transform: scale(1); } /* Exhale */
+        }
+        
+        /* Daily Log Tool */
+        .daily-log {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        #streak-display {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        #streak-badge {
+            font-size: 2rem;
+            height: 35px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Pressure Drill Tool */
+        .pressure-drill-setup, .pressure-drill-active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-weight: 500;
+            color: var(--secondary-text);
+        }
+
+        input[type="text"], input[type="number"] {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
+            color: var(--primary-text);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.1);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .pressure-drill-active {
+            align-items: center;
+        }
+        
+        #drill-task-display {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        #drill-timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        #stress-graph-container {
+            width: 100%;
+            height: 100px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        #stress-graph {
+            width: 100%;
+            height: 100%;
+        }
+
+        #drill-feedback {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 10px;
+            height: 25px;
+            transition: color 0.5s ease;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Toast Notification */
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--success-color);
+            color: white;
+            padding: 16px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1000;
+        }
+
+        #toast.show {
+            bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 20px 10px;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Training Hub</h1>
+            <p>Master your nervous system. Transform stress into strength through active training and discovery.</p>
+        </header>
+
+        <main class="dashboard">
+            <div class="card">
+                <h2>🌬️ Step 1: Master Your Breath</h2>
+                <p class="tool-description">Use this visual guide to practice Box Breathing. This technique calms your nervous system and improves focus under pressure.</p>
+                <div class="breathing-tool">
+                    <div id="breathing-visualizer" class="breathing-visualizer">
+                        <p id="breathing-text">Ready</p>
+                    </div>
+                    <button id="toggle-breathing-btn" class="btn">Start Breathing</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📈 Step 2: Track Your Progress</h2>
+                 <p class="tool-description">Log a "State Shift" each day you practice. Building a daily habit is key. Streaks unlock achievements!</p>
+                <div class="daily-log">
+                    <div id="streak-badge"></div>
+                    <p id="streak-display">Loading streak...</p>
+                    <button id="log-shift-btn" class="btn">Log Daily State Shift</button>
+                </div>
+            </div>
+        </main>
+        
+        <div class="card">
+            <h2>🔥 Step 3: Take a Challenge</h2>
+            <p class="tool-description">The Pressure Drill simulates a stressful event. Your goal is to complete a simple task while managing your (simulated) stress level by consciously taking calming breaths.</p>
+            
+            <div id="pressure-drill-setup" class="pressure-drill-setup">
+                <div class="input-group">
+                    <label for="drill-task">Define a simple task:</label>
+                    <input type="text" id="drill-task" placeholder="e.g., Recite the alphabet backwards" value="Recite the alphabet backwards">
+                </div>
+                <div class="input-group">
+                    <label for="drill-duration">Set timer (seconds):</label>
+                    <input type="number" id="drill-duration" value="30" min="10" max="120">
+                </div>
+                <button id="start-drill-btn" class="btn">Start Drill</button>
+            </div>
+            
+            <div id="pressure-drill-active" class="pressure-drill-active hidden">
+                <p id="drill-task-display"></p>
+                <h3 id="drill-timer">30</h3>
+                <div id="stress-graph-container">
+                    <canvas id="stress-graph"></canvas>
+                </div>
+                <button id="drill-breathe-btn" class="btn btn-secondary">Breathe</button>
+                <p id="drill-feedback"></p>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="toast"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Audio Cues ---
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const playSound = (type) => {
+                if (!audioContext) return;
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+                
+                if (type === 'click') {
+                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                    oscillator.type = 'sine';
+                } else if (type === 'success') {
+                    oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                    oscillator.type = 'triangle';
+                } else if (type === 'calm') {
+                     oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.type = 'sine';
+                }
+                
+                oscillator.start(audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.00001, audioContext.currentTime + 0.2);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            };
+
+            // --- Toast Notification ---
+            const toast = document.getElementById('toast');
+            const showToast = (message, duration = 3000) => {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, duration);
+            };
+
+            // --- Breathing Tool ---
+            const visualizer = document.getElementById('breathing-visualizer');
+            const breathingText = document.getElementById('breathing-text');
+            const toggleBreathingBtn = document.getElementById('toggle-breathing-btn');
+            let breathingInterval;
+            let isBreathing = false;
+
+            const breathingCycle = [
+                { text: 'Inhale', duration: 4000 },
+                { text: 'Hold', duration: 4000 },
+                { text: 'Exhale', duration: 4000 },
+                { text: 'Hold', duration: 4000 },
+            ];
+            
+            const startBreathing = () => {
+                let currentStep = -1;
+                const runStep = () => {
+                    currentStep = (currentStep + 1) % breathingCycle.length;
+                    const { text, duration } = breathingCycle[currentStep];
+                    breathingText.textContent = text;
+                    breathingInterval = setTimeout(runStep, duration);
+                };
+                runStep();
+                visualizer.classList.add('breathing');
+                isBreathing = true;
+                toggleBreathingBtn.textContent = 'Stop Breathing';
+            };
+
+            const stopBreathing = () => {
+                clearInterval(breathingInterval);
+                visualizer.classList.remove('breathing');
+                breathingText.textContent = 'Ready';
+                isBreathing = false;
+                toggleBreathingBtn.textContent = 'Start Breathing';
+            };
+
+            toggleBreathingBtn.addEventListener('click', () => {
+                playSound('click');
+                isBreathing ? stopBreathing() : startBreathing();
+            });
+
+            // --- Daily Log Tool ---
+            const streakDisplay = document.getElementById('streak-display');
+            const logShiftBtn = document.getElementById('log-shift-btn');
+            const streakBadge = document.getElementById('streak-badge');
+            
+            const updateStreakDisplay = () => {
+                const streakData = JSON.parse(localStorage.getItem('streakData')) || { streak: 0, lastLog: null };
+                const today = new Date().toDateString();
+                const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+                if (streakData.lastLog !== today && streakData.lastLog !== yesterday) {
+                    streakData.streak = 0; // Reset streak if more than a day has passed
+                }
+                
+                streakDisplay.textContent = `Current Streak: ${streakData.streak} days`;
+
+                let badge = '';
+                if (streakData.streak >= 7) badge = '🏆';
+                else if (streakData.streak >= 3) badge = '🥉';
+                streakBadge.textContent = badge;
+                if (badge) streakBadge.style.transform = 'scale(1.2)';
+
+                if (streakData.lastLog === today) {
+                    logShiftBtn.textContent = 'Logged for Today!';
+                    logShiftBtn.disabled = true;
+                } else {
+                    logShiftBtn.textContent = 'Log Daily State Shift';
+                    logShiftBtn.disabled = false;
+                }
+            };
+
+            logShiftBtn.addEventListener('click', () => {
+                playSound('success');
+                let streakData = JSON.parse(localStorage.getItem('streakData')) || { streak: 0, lastLog: null };
+                const today = new Date().toDateString();
+                const yesterday = new Date(Date.now() - 86400000).toDateString();
+
+                if (streakData.lastLog !== today) {
+                    if (streakData.lastLog === yesterday) {
+                        streakData.streak++;
+                    } else {
+                        streakData.streak = 1;
+                    }
+                    streakData.lastLog = today;
+                    localStorage.setItem('streakData', JSON.stringify(streakData));
+                    showToast(`Great job! Streak: ${streakData.streak} days!`);
+                }
+                updateStreakDisplay();
+            });
+
+            // --- Pressure Drill ---
+            const setupDiv = document.getElementById('pressure-drill-setup');
+            const activeDiv = document.getElementById('pressure-drill-active');
+            const startBtn = document.getElementById('start-drill-btn');
+            const taskInput = document.getElementById('drill-task');
+            const durationInput = document.getElementById('drill-duration');
+            const taskDisplay = document.getElementById('drill-task-display');
+            const timerDisplay = document.getElementById('drill-timer');
+            const breatheBtn = document.getElementById('drill-breathe-btn');
+            const feedbackDisplay = document.getElementById('drill-feedback');
+            const graphCanvas = document.getElementById('stress-graph');
+            let drillInterval, stressChart;
+            let stressLevel = 80;
+
+            const updateChart = () => {
+                stressChart.data.datasets[0].data.push(stressLevel);
+                stressChart.data.labels.push('');
+                if (stressChart.data.datasets[0].data.length > 30) {
+                     stressChart.data.datasets[0].data.shift();
+                     stressChart.data.labels.shift();
+                }
+                stressChart.update('none');
+            };
+
+            startBtn.addEventListener('click', () => {
+                playSound('click');
+                const duration = parseInt(durationInput.value);
+                taskDisplay.textContent = `Task: ${taskInput.value}`;
+                timerDisplay.textContent = duration;
+                
+                setupDiv.classList.add('hidden');
+                activeDiv.classList.remove('hidden');
+                
+                let timeLeft = duration;
+                stressLevel = 80; // Reset stress level
+                
+                // Chart.js setup
+                const initialData = {
+                    labels: [''],
+                    datasets: [{
+                        label: 'Simulated Stress',
+                        data: [stressLevel],
+                        borderColor: var(--danger-color),
+                        backgroundColor: 'rgba(244, 67, 54, 0.2)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0
+                    }]
+                };
+
+                if(stressChart) stressChart.destroy();
+                stressChart = new Chart(graphCanvas, {
+                    type: 'line',
+                    data: initialData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { min: 0, max: 100, display: false },
+                            x: { display: false }
+                        },
+                        plugins: { legend: { display: false } }
+                    }
+                });
+
+                drillInterval = setInterval(() => {
+                    timeLeft--;
+                    timerDisplay.textContent = timeLeft;
+
+                    // Stress naturally creeps up
+                    stressLevel = Math.min(100, stressLevel + Math.random() * 2);
+                    updateChart();
+
+                    if (timeLeft <= 0) {
+                        clearInterval(drillInterval);
+                        if (stressLevel < 40) {
+                            feedbackDisplay.textContent = "Excellent Control!";
+                            feedbackDisplay.style.color = var(--success-color);
+                            playSound('success');
+                        } else {
+                            feedbackDisplay.textContent = "Challenge Complete!";
+                            feedbackDisplay.style.color = var(--primary-text);
+                        }
+                        breatheBtn.disabled = true;
+                        setTimeout(() => {
+                           setupDiv.classList.remove('hidden');
+                           activeDiv.classList.add('hidden');
+                           feedbackDisplay.textContent = "";
+                           breatheBtn.disabled = false;
+                        }, 4000);
+                    }
+                }, 1000);
+            });
+            
+            breatheBtn.addEventListener('click', () => {
+                playSound('calm');
+                // Each breath significantly reduces stress
+                stressLevel = Math.max(0, stressLevel - 15);
+                stressChart.data.datasets[0].borderColor = var(--success-color);
+                stressChart.data.datasets[0].backgroundColor = 'rgba(76, 175, 80, 0.2)';
+                updateChart();
+
+                setTimeout(() => {
+                    stressChart.data.datasets[0].borderColor = var(--danger-color);
+                    stressChart.data.datasets[0].backgroundColor = 'rgba(244, 67, 54, 0.2)';
+                }, 500);
+            });
+            
+            // --- Initial Load ---
+            updateStreakDisplay();
+            stopBreathing();
+        });
+    </script>
+</body>
+</html>
